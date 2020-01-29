@@ -46,14 +46,7 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handleSort = clickedColumn => {
-    const sortColumn = { ...this.state.sortColumn };
-    if (sortColumn.id === clickedColumn) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.order = "asc";
-      sortColumn.id = clickedColumn;
-    }
+  handleSort = sortColumn => {
     this.setState({ sortColumn });
   };
 
