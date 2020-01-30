@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Like from "./Like";
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
-import _ from "lodash";
 
 class MoviesTable extends Component {
   columns = [
@@ -12,13 +11,13 @@ class MoviesTable extends Component {
     { id: "dailyRentalRate", label: "Rate" },
     {
       key: "like",
-      content: movie => (
+      getChildElement: movie => (
         <Like movie={movie} onLike={() => this.props.onLike(movie)} />
       )
     },
     {
       key: "delete",
-      content: movie => (
+      getChildElement: movie => (
         <button
           onClick={() => this.props.onDelete(movie)}
           className="btn btn-danger btn-sm"
@@ -28,17 +27,9 @@ class MoviesTable extends Component {
       )
     }
   ];
-  extractCells() {
-    return this.props.movies.map(movie =>
-      this.columns.map(column => {
-        if (column.content) return column.content(movie);
-        return _.get(movie, column.id);
-      })
-    );
-  }
+
   render() {
-    const { sortColumn, onSort } = this.props;
-    const cells = this.extractCells();
+    const { movies, sortColumn, onSort } = this.props;
     return (
       <table className="table">
         <TableHeader
@@ -46,7 +37,7 @@ class MoviesTable extends Component {
           sortColumn={sortColumn}
           onSort={onSort}
         />
-        <TableBody cells={cells} />
+        <TableBody items={movies} columns={this.columns} />
       </table>
     );
   }
