@@ -7,14 +7,20 @@ class TableBody extends Component {
     return _.get(row, column.id);
   }
 
+  createKey(row, column) {
+    return row._id + (column.id || column.key);
+  }
+
   render() {
     const { items, columns } = this.props;
     return (
       <tbody>
         {items.map(row => (
-          <tr>
+          <tr key={row._id}>
             {columns.map(column => (
-              <td>{this.extractCell(row, column)}</td>
+              <td key={this.createKey(row, column)}>
+                {this.extractCell(row, column)}
+              </td>
             ))}
           </tr>
         ))}
