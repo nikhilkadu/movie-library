@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Like from "./common/Like";
+
 class Movie extends Component {
   render() {
     const { movie, onDelete, onLike } = this.props;
@@ -12,14 +13,7 @@ class Movie extends Component {
         <td>
           <Like movie={movie} onLike={() => onLike(movie)} />
         </td>
-        <td>
-          <button
-            onClick={() => onDelete(this.props.movie)}
-            className="btn btn-danger btn-sm"
-          >
-            Delete
-          </button>
-        </td>
+        <td></td>
       </tr>
     );
   }
