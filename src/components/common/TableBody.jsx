@@ -2,24 +2,19 @@ import React, { Component } from "react";
 import _ from "lodash";
 
 class TableBody extends Component {
-  extractCells() {
-    const { items, columns } = this.props;
-    return items.map(row =>
-      columns.map(column => {
-        if (column.getChildElement) return column.getChildElement(row);
-        return _.get(row, column.id);
-      })
-    );
+  extractCell(row, column) {
+    if (column.getChildElement) return column.getChildElement(row);
+    return _.get(row, column.id);
   }
 
   render() {
-    const cells = this.extractCells();
+    const { items, columns } = this.props;
     return (
       <tbody>
-        {cells.map(row => (
+        {items.map(row => (
           <tr>
-            {row.map(cell => (
-              <td>{cell}</td>
+            {columns.map(column => (
+              <td>{this.extractCell(row, column)}</td>
             ))}
           </tr>
         ))}
