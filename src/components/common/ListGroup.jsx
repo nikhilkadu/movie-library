@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ListGroup = props => {
-  const { items, selectedItem, onFilterChanged } = props;
-
+const ListGroup = ({ items, selectedItem, onFilterChanged }) => {
   return (
     <ul className="list-group">
       {items.map(item => (
