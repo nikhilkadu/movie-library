@@ -4,7 +4,7 @@ import Table from "./common/Table";
 
 class MoviesTable extends Component {
   columns = [
-    { id: "title", label: "Title" },
+    { id: "displayTitle", label: "Title" },
     { id: "genre.name", label: "Genre" },
     { id: "numberInStock", label: "Stock" },
     { id: "dailyRentalRate", label: "Rate" },

@@ -5,6 +5,7 @@ import { paginate } from "../utils/paginate";
 import ListGroup from "./common/ListGroup";
 import MoviesTable from "./MoviesTable";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -12,11 +13,22 @@ class Movies extends Component {
     currentPage: 1,
     selectedGenre: "All Genres",
     genres: [],
-    sortColumn: { id: "title", order: "asc" }
+    sortColumn: { id: "displayTitle", order: "asc" }
   };
 
-  componentDidMount() {
+  prepareMoviesData() {
     const movies = getMovies();
+    // Add a new field displayTitle which contains link to the movie
+    return movies.map(movie => {
+      let ret = { ...movie };
+      const path = "/movies/" + movie._id;
+      ret.displayTitle = <Link to={path}>{movie.title}</Link>;
+      return ret;
+    });
+  }
+
+  componentDidMount() {
+    const movies = this.prepareMoviesData();
     const genres = [
       "All Genres",
       ...new Set(movies.map(movie => movie.genre.name))
@@ -67,11 +79,8 @@ class Movies extends Component {
         ? [...allMovies]
         : allMovies.filter(movie => movie.genre.name === selectedGenre);
 
-    const sortedMovies = _.orderBy(
-      filteredMovies,
-      sortColumn.id,
-      sortColumn.order
-    );
+    const sortId = sortColumn.id === "displayTitle" ? "title" : sortColumn.id;
+    const sortedMovies = _.orderBy(filteredMovies, sortId, sortColumn.order);
 
     const pagedMovieData = paginate(sortedMovies, moviesPerPage, currentPage);
     const totalFilteredMovies = filteredMovies.length;
