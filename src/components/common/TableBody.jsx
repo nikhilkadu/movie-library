@@ -3,7 +3,7 @@ import _ from "lodash";
 
 class TableBody extends Component {
   extractCell(row, column) {
-    if (column.getChildElement) return column.getChildElement(row);
+    if (column.renderCell) return column.renderCell(row);
     return _.get(row, column.id);
   }
 

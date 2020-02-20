@@ -1,22 +1,29 @@
 import React, { Component } from "react";
 import Like from "./common/Like";
 import Table from "./common/Table";
+import { Link } from "react-router-dom";
 
 class MoviesTable extends Component {
   columns = [
-    { id: "displayTitle", label: "Title" },
+    {
+      id: "title",
+      label: "Title",
+      renderCell: movie => (
+        <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      )
+    },
     { id: "genre.name", label: "Genre" },
     { id: "numberInStock", label: "Stock" },
     { id: "dailyRentalRate", label: "Rate" },
     {
       key: "like",
-      getChildElement: movie => (
+      renderCell: movie => (
         <Like movie={movie} onLike={() => this.props.onLike(movie)} />
       )
     },
     {
       key: "delete",
-      getChildElement: movie => (
+      renderCell: movie => (
         <button
           onClick={() => this.props.onDelete(movie)}
           className="btn btn-danger btn-sm"

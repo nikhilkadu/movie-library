@@ -16,19 +16,8 @@ class Movies extends Component {
     sortColumn: { id: "displayTitle", order: "asc" }
   };
 
-  prepareMoviesData() {
-    const movies = getMovies();
-    // Add a new field displayTitle which contains link to the movie
-    return movies.map(movie => {
-      let ret = { ...movie };
-      const path = "/movies/" + movie._id;
-      ret.displayTitle = <Link to={path}>{movie.title}</Link>;
-      return ret;
-    });
-  }
-
   componentDidMount() {
-    const movies = this.prepareMoviesData();
+    const movies = getMovies();
     const genres = [
       "All Genres",
       ...new Set(movies.map(movie => movie.genre.name))
@@ -79,8 +68,11 @@ class Movies extends Component {
         ? [...allMovies]
         : allMovies.filter(movie => movie.genre.name === selectedGenre);
 
-    const sortId = sortColumn.id === "displayTitle" ? "title" : sortColumn.id;
-    const sortedMovies = _.orderBy(filteredMovies, sortId, sortColumn.order);
+    const sortedMovies = _.orderBy(
+      filteredMovies,
+      sortColumn.id,
+      sortColumn.order
+    );
 
     const pagedMovieData = paginate(sortedMovies, moviesPerPage, currentPage);
     const totalFilteredMovies = filteredMovies.length;
