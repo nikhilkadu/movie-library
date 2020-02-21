@@ -10,10 +10,6 @@ class LoginForm extends Component {
       console.log("Form Submitted by ", this.username.current.value);
   }
 
-  componentDidMount() {
-    this.username.current.focus();
-  }
-
   render() {
     return (
       <div>
@@ -21,6 +17,7 @@ class LoginForm extends Component {
           <div className="form-group">
             <label htmlFor="login">Username</label>
             <input
+              autoFocus
               ref={this.username}
               className="form-control"
               type="text"
