@@ -1,11 +1,10 @@
 import React from "react";
-import Input from "./common/Input";
 import Joi from "joi-browser";
 import Form from "./common/Form";
 
 class LoginForm extends Form {
   state = {
-    inputFields: { username: "", password: "" },
+    userInput: { username: "", password: "" },
     errors: {
       username: "",
       password: ""
@@ -22,37 +21,16 @@ class LoginForm extends Form {
   };
 
   submitAction = () => {
-    console.log("Form submitted", this.state.inputFields);
+    console.log("Form submitted", this.state.userInput);
   };
 
   render() {
-    const { inputFields, errors } = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmitForm}>
-          <Input
-            label="Username"
-            name="username"
-            value={inputFields.username}
-            type="text"
-            onChange={this.handleChange}
-            error={errors.username}
-          />
-          <Input
-            label="Password"
-            name="password"
-            value={inputFields.password}
-            type="password"
-            onChange={this.handleChange}
-            error={errors.password}
-          />
-          <button
-            disabled={this.validate()}
-            type="submit"
-            className="btn btn-primary"
-          >
-            Login
-          </button>
+          {this.renderInputField("username", "Username")}
+          {this.renderInputField("password", "Password")}
+          {this.renderButton("Login")}
         </form>
       </div>
     );
