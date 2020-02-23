@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./common/Input";
+import Joi from "joi-browser";
 
 class LoginForm extends Component {
   state = {
@@ -10,21 +11,34 @@ class LoginForm extends Component {
     }
   };
 
+  schema = {
+    username: Joi.string()
+      .required()
+      .label("Username"),
+    password: Joi.string()
+      .required()
+      .label("Password")
+  };
+
   validate = () => {
     const { account } = this.state;
     const errors = {};
-    if (account.username.trim() === "")
-      errors.username = "Username is required";
-    if (account.password.trim() === "")
-      errors.password = "Password is required";
+
+    const options = { abortEarly: false };
+    const { error } = Joi.validate(account, this.schema, options);
+    if (!error) return {};
+
+    for (let errorObj of error.details)
+      errors[errorObj.path[0]] = errorObj.message;
+
     return errors;
   };
 
   validateProperty = ({ name, value }) => {
-    if (name === "username" && value.trim() === "")
-      return "Username is required";
-    if (name === "password" && value.trim() === "")
-      return "Password is required";
+    let account = { [name]: value };
+    let schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(account, schema);
+    return error ? error.details[0].message : "";
   };
 
   handleSubmitForm = e => {
@@ -66,7 +80,11 @@ class LoginForm extends Component {
             onChange={this.handleChange}
             error={errors.password}
           />
-          <button type="submit" className="btn btn-primary">
+          <button
+            disabled={Object.keys(this.validate()).length}
+            type="submit"
+            className="btn btn-primary"
+          >
             Login
           </button>
         </form>
