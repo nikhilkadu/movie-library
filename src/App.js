@@ -6,6 +6,7 @@ import Movie from "./components/movie";
 import Navbar from "./components/navbar";
 import Rentals from "./components/rentals";
 import Customers from "./components/customers";
+import RegisterForm from "./components/register-form";
 import NotFound from "./components/not-found";
 import LoginForm from "./components/login-form";
 
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <main className="container">
         <Switch>
+          <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" render={props => <Movie {...props} />} />
           <Route
