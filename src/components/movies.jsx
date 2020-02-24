@@ -13,7 +13,8 @@ class Movies extends Component {
     currentPage: 1,
     selectedGenre: "All Genres",
     genres: [],
-    sortColumn: { id: "displayTitle", order: "asc" }
+    sortColumn: { id: "displayTitle", order: "asc" },
+    searchText: ""
   };
 
   componentDidMount() {
@@ -26,8 +27,19 @@ class Movies extends Component {
     this.setState({ movies, genres });
   }
 
+  handleSearch = ({ currentTarget }) => {
+    this.setState({
+      selectedGenre: "All Genres",
+      searchText: currentTarget.value
+    });
+  };
+
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
   handleFilter = selectedGenre => {
-    this.setState({ selectedGenre, currentPage: 1 });
+    this.setState({ selectedGenre, searchText: "", currentPage: 1 });
   };
 
   handlePageClick = currentPage => {
@@ -49,24 +61,27 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handleSort = sortColumn => {
-    this.setState({ sortColumn });
-  };
-
   getPagedData() {
     const {
       movies: allMovies,
       currentPage,
       selectedGenre,
-      sortColumn
+      sortColumn,
+      searchText
     } = this.state;
 
     const { moviesPerPage } = this.props;
 
-    const filteredMovies =
-      selectedGenre === "All Genres"
-        ? [...allMovies]
-        : allMovies.filter(movie => movie.genre.name === selectedGenre);
+    let filteredMovies = [...allMovies];
+    if (searchText !== "") {
+      filteredMovies = filteredMovies.filter(movie =>
+        movie.title.match(new RegExp(searchText, "i"))
+      );
+    } else if (selectedGenre !== "All Genres") {
+      filteredMovies = allMovies.filter(
+        movie => movie.genre.name === selectedGenre
+      );
+    }
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -84,7 +99,13 @@ class Movies extends Component {
     if (this.state.movies.length === 0) return <div>No movies to display</div>;
 
     const { moviesPerPage } = this.props;
-    const { currentPage, selectedGenre, genres, sortColumn } = this.state;
+    const {
+      currentPage,
+      selectedGenre,
+      genres,
+      sortColumn,
+      searchText
+    } = this.state;
     const { totalFilteredMovies, pagedMovieData } = this.getPagedData();
 
     return (
@@ -98,6 +119,16 @@ class Movies extends Component {
         </div>
         <div className="col">
           <div style={{ margin: "0 0 21px 0" }}>
+            <span className="search-box">
+              <input
+                className="form-control"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={this.handleSearch}
+                value={searchText}
+              />
+            </span>
             <span>{totalFilteredMovies} movies</span>
             <span className="add-button">
               <Link className="btn btn-primary" to="/movies/add" role="button">
