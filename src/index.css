@@ -12,6 +12,11 @@ body {
   margin-bottom: 20px;
 }
 
+.add-button {
+  right: 80px;
+  position: absolute;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

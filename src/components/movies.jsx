@@ -4,6 +4,7 @@ import Pagination from "./common/Pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/ListGroup";
 import MoviesTable from "./MoviesTable";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class Movies extends Component {
@@ -97,7 +98,12 @@ class Movies extends Component {
         </div>
         <div className="col">
           <div style={{ margin: "0 0 21px 0" }}>
-            Showing {totalFilteredMovies} movies.
+            <span>{totalFilteredMovies} movies</span>
+            <span className="add-button">
+              <Link className="btn btn-primary" to="/movies/add" role="button">
+                Add
+              </Link>
+            </span>
           </div>
           <MoviesTable
             movies={pagedMovieData}

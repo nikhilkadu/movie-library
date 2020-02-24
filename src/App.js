@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-
 import Movies from "./components/movies";
 import Movie from "./components/movie";
 import Navbar from "./components/navbar";
@@ -9,7 +8,6 @@ import Customers from "./components/customers";
 import RegisterForm from "./components/register-form";
 import NotFound from "./components/not-found";
 import LoginForm from "./components/login-form";
-
 import "./App.css";
 
 function App() {
